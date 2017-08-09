@@ -91,33 +91,32 @@ def genComponent(name,generics,ports):
 def genInstance(name,generics,ports):
     out="  "+name+"_inst : "+name+"\n"
     if len(generics)>0:
-        out=out+"    generic map (\n"
+        out=out+"  generic map (\n"
         for g in generics: # we'll map the generics to symbols of the same name to support passing generics through hierarchies...an alternate implementation might map them to their default values
-            out=out+"      "+g[0]+" => "+g[0]
+            out=out+"    "+g[0]+" => "+g[0]
             out=out+",\n"
-        out=out[0:-2]+")\n" # replace , with )
+        out=out[0:-2]+"\n  )\n" # replace , with )
     if len(ports)>0:
-        out=out+"    port map (\n"
+        out=out+"  port map (\n"
         for p in ports:
-            out=out+"      "+p[0]+" => "+p[0]
+            out=out+"    "+p[0]+" => "+p[0]
             if p[3] != None:
                 out=out+" := "+p[3]
             out=out+",\n"
-        out=out[0:-2]+");  --"+p[2]+"\n\n" # replace , with );
+        out=out[0:-2]+"\n  );\n" # replace , with );
     return out
 
 
 
 
 def genSignals(name,generics,ports):
-    out = "  -- signals for "+name+"-----------------\n"
+    out = ""
     if len(ports)>0:
         for p in ports:
-            out=out+"  signal "+p[0]+" : "+p[2]
+            out=out+"  signal p"+p[0]+" : "+p[2]
             if p[3] != None:
                 out=out+" := "+p[3]
             out=out+";\n"
-    out = out + "  -- end signals for "+name+"\n\n"
     return out
 
 
